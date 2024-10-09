@@ -1,0 +1,62 @@
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
+
+setup: 
+	cp .env.example .env; 
+	cp bot/.env.example bot/.env;
+	docker network create botnet
+
+git-config:
+	@echo "Настройка Git..."
+	@read -p "Введите ваше имя: " name; \
+	git config user.name "$$name"; \
+	read -p "Введите вашу электронную почту: " email; \
+	git config user.email "$$email"; \
+	echo "Настройка завершена."; \
+	git config user.name; \
+	git config user.email
+
+
+# Чистая инициализация
+init: docker-down-clear docker-build up
+
+# Полностью обновить образы
+update: docker-down-clear docker-pull docker-build-pull up
+
+# Delete images by tag
+delete-tag: docker-clear-images-tag
+# Delete iages by names
+delete-name: docker-clear-images-name
+
+
+# shortcuts
+start: docker-up 
+stop: docker-down
+restart: stop start
+rebuild: stop build start 
+build: docker-build
+
+docker-build:
+	docker compose build
+docker-up:
+	docker compose up -d
+docker-down:
+	docker compose down --remove-orphans
+docker-down-clear:
+	docker compose down -v --remove-orphans
+docker-pull:
+	docker compose pull
+docker-clear-images-tag:
+	docker rmi $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep ':${TAG}') -f
+docker-clear-images-name:
+	docker rmi $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep '${PROJECT}') -f
+composer-update:
+	${DOCKER_EXEC_APP} composer update
+composer-install:
+	${DOCKER_EXEC_APP} composer install
+chmod:
+	docker exec -it php chmod -R 777 
+exec-app:
+	${DOCKER_EXEC_APP} bash

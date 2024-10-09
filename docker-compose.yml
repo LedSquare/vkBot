@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  php:
+    container_name: ${PROJECT}_php
+    image: ${PROJECT}_php:${TAG}
+    build:
+      context: .
+      dockerfile: docker/dev/php/Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - ./bot:/bot
+    networks:
+      - appnet
+
+  server:
+    container_name: ${PROJECT}_nginx
+    image: ${PROJECT}_nginx:${TAG}
+    build:
+      context: .
+      dockerfile: docker/dev/nginx/Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - php
+    volumes:
+      - ./bot:/bot
+    networks:
+      - appnet
+
+  # db:
+  #   image: postgres:15-bookworm
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #     POSTGRES_DB: ${DB_DATABASE}
+  #   volumes:
+  #     - ./data/dev/db:/var/lib/postgresql/data:rw
+  #   container_name: ${PROJECT}_db
+  #   hostname: db
+  #   networks:
+  #     - appnet
+
+#------------
+
+networks:
+  appnet:
+    name: botnet
+    driver: bridge
+    external: true
+      
