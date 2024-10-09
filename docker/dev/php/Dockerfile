@@ -14,23 +14,23 @@ RUN apk $CACHE update && apk $CACHE add \
     git \
     zip \
     unzip \
-    wget 
-# libzip-dev \
-# build-base \
-# libpng-dev \
-# freetype-dev \
-# libjpeg-turbo-dev \
-# zlib-dev \
-# libpq \
-# libpq-dev \
-# libffi-dev \
-# openssl-dev \
-# sqlite-dev \
-# tk-dev \
-# gdbm-dev \
-# ncurses-dev \
-# bzip2-dev \
-# zlib-dev 
+    wget \
+    libzip-dev \
+    build-base \
+    libpng-dev \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    zlib-dev \
+    libpq \
+    libpq-dev \
+    libffi-dev \
+    openssl-dev \
+    sqlite-dev \
+    tk-dev \
+    gdbm-dev \
+    ncurses-dev \
+    bzip2-dev \
+    zlib-dev 
 
 RUN docker-php-ext-install \
     bcmath\
