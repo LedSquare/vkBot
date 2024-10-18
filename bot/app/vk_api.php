@@ -1,8 +1,5 @@
 <?php
 
-define('VK_API_VERSION', '5.67'); //Используемая версия API
-define('VK_API_ENDPOINT', 'https://api.vk.com/method/');
-
 function vkApi_messagesSend($peer_id, $message, $attachments = array())
 {
     return _vkApi_call('messages.send', array(
@@ -53,11 +50,11 @@ function vkApi_docsSave($file, $title)
 
 function _vkApi_call($method, $params = array())
 {
-    $params['access_token'] = VK_API_ACCESS_TOKEN;
-    $params['v'] = VK_API_VERSION;
+    $params['access_token'] = env('VK_ENDPOINT');
+    $params['v'] = env('VK_API_VERSION', '5.199');
 
     $query = http_build_query($params);
-    $url = VK_API_ENDPOINT . $method . '?' . $query;
+    $url = env('VK_ENDPOINT') . $method . '?' . $query;
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
