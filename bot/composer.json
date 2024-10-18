@@ -1,5 +1,9 @@
 {
     "autoload": {
+        "files": [
+            "app/helpers/helpers.php",
+            "app/vk_api.php"
+        ],
         "psr-4": {
             "App\\": "app"
         }
@@ -11,6 +15,7 @@
     ],
     "require": {
         "psr/log": "^3.0",
-        "monolog/monolog": "^3.4"
+        "monolog/monolog": "^3.4",
+        "vlucas/phpdotenv": "^5.6"
     }
 }
