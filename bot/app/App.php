@@ -2,8 +2,9 @@
 
 namespace App;
 
-use App\Controller;
-use App\Response;
+use App\Core\Router\Route;
+use App\Core\Router\RouteDispatcher;
+use App\Http\Response;
 use Dotenv\Dotenv;
 
 final class App
@@ -13,10 +14,10 @@ final class App
         self::initEnv();
         self::mode();
 
-        $controller = new Controller();
-        $response = $controller->index();
-
-        self::printJson($response);
+        foreach (Route::getRoutes() as $routeConfiguration) {
+            $dispatcher = new RouteDispatcher($routeConfiguration);
+            $dispatcher->process();
+        }
     }
 
     private static function initEnv(): void
@@ -33,9 +34,4 @@ final class App
         }
     }
 
-    private static function printJson(Response $response): void
-    {
-        header('Content-Type: application/json');
-        echo $response->toJson()->response();
-    }
 }

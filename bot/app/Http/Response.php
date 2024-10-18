@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Http;
 
 use function json_encode;
 
@@ -13,12 +13,13 @@ class Response
 
     public function toJson(): self
     {
+        header('content-type application/json');
         $this->data = json_encode($this->data);
         return $this;
     }
 
-    public function response(): string
+    public function response(): void
     {
-        return $this->data;
+        print_r($this->data);
     }
 }

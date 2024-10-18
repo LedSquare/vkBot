@@ -2,6 +2,7 @@
     "autoload": {
         "files": [
             "app/helpers/helpers.php",
+            "app/routes/web.php",
             "app/vk_api.php"
         ],
         "psr-4": {
